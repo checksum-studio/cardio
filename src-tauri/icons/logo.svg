@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 148 148">
+  <defs>
+    <!-- Heart fill gradient: bright coral top-left to deep crimson bottom-right -->
+    <radialGradient id="heart-fill" cx="38%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#FF6B8A"/>
+      <stop offset="50%" stop-color="#E63950"/>
+      <stop offset="100%" stop-color="#C9184A"/>
+    </radialGradient>
+
+    <!-- Outer glow -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5"/>
+    </filter>
+
+    <!-- ECG line glow -->
+    <filter id="ecg-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+
+    <!-- Clip ECG to heart -->
+    <clipPath id="heart-clip">
+      <path d="M 64,118 C 64,118  2,76  2,40 C 2,18  18,2  40,2 C 52,2  60,12  64,24 C 68,12  76,2  88,2 C 110,2  126,18  126,40 C 126,76  64,118  64,118 Z"/>
+    </clipPath>
+
+    <!-- Specular highlight: top-left sheen -->
+    <radialGradient id="highlight" cx="38%" cy="28%" r="35%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Glow behind heart -->
+  <path d="M 64,118 C 64,118  2,76  2,40 C 2,18  18,2  40,2 C 52,2  60,12  64,24 C 68,12  76,2  88,2 C 110,2  126,18  126,40 C 126,76  64,118  64,118 Z" fill="#FF6B8A" opacity="0.35" filter="url(#glow)"/>
+
+  <!-- Subtle dark outline (heart stroke behind fill) -->
+  <path d="M 64,118 C 64,118  2,76  2,40 C 2,18  18,2  40,2 C 52,2  60,12  64,24 C 68,12  76,2  88,2 C 110,2  126,18  126,40 C 126,76  64,118  64,118 Z" fill="none" stroke="#A01030" stroke-width="2.5" stroke-opacity="0.35"/>
+
+  <!-- Heart body -->
+  <path d="M 64,118 C 64,118  2,76  2,40 C 2,18  18,2  40,2 C 52,2  60,12  64,24 C 68,12  76,2  88,2 C 110,2  126,18  126,40 C 126,76  64,118  64,118 Z" fill="url(#heart-fill)"/>
+
+  <!-- Specular highlight -->
+  <path d="M 64,118 C 64,118  2,76  2,40 C 2,18  18,2  40,2 C 52,2  60,12  64,24 C 68,12  76,2  88,2 C 110,2  126,18  126,40 C 126,76  64,118  64,118 Z" fill="url(#highlight)"/>
+
+  <!-- ECG glow (blurred, wider stroke behind the crisp line) -->
+  <g clip-path="url(#heart-clip)">
+    <polyline points="-5,58 32,58 38,54 44,58 50,58 54,63 60,28 66,72 70,58 76,58 84,51 92,58 133,58"
+              fill="none" stroke="white" stroke-opacity="0.4"
+              stroke-width="10"
+              stroke-linejoin="round" stroke-linecap="round"
+              filter="url(#ecg-glow)"/>
+    <!-- ECG crisp line -->
+    <polyline points="-5,58 32,58 38,54 44,58 50,58 54,63 60,28 66,72 70,58 76,58 84,51 92,58 133,58"
+              fill="none" stroke="white" stroke-opacity="0.95"
+              stroke-width="3.5"
+              stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+</svg>

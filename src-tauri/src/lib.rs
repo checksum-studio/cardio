@@ -1,5 +1,6 @@
 mod ble;
 mod config;
+mod foreground_service;
 mod server;
 mod state;
 
@@ -208,6 +209,11 @@ pub fn run() {
     let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_blec::init())
         .plugin(tauri_plugin_opener::init());
+
+    #[cfg(target_os = "android")]
+    {
+        builder = builder.plugin(foreground_service::init());
+    }
 
     #[cfg(desktop)]
     {

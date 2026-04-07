@@ -141,11 +141,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Initialize Tauri Android
-        run: pnpm tauri android init
-        env:
-          NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/29.0.13846066
-
       - name: Build Android
         run: pnpm tauri android build
         env:
@@ -153,19 +148,25 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: Upload APK
+      - name: Rename APK
+        run: |
+          apk=$(find src-tauri/gen/android/app/build/outputs/apk -name '*.apk' -not -name '*debug*' | head -1)
+          cp "$apk" "cardio_${{ inputs.tag_name }}_arm64.apk"
+
+      - name: Upload APK to release
+        if: ${{ inputs.tag_name }}
+        run: gh release upload "${{ inputs.tag_name }}" "cardio_${{ inputs.tag_name }}_arm64.apk" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
-
-      - name: Upload AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-aab
-          path: src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
+          path: "cardio_${{ inputs.tag_name }}_arm64.apk"
 
   build-ios:
+    continue-on-error: true
     permissions:
       contents: write
       id-token: write

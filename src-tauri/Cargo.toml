@@ -35,7 +35,7 @@ utoipa-scalar = { version = "0.3", features = ["axum"] }
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri = { version = "2", features = ["tray-icon"] }
 tauri-plugin-autostart = "2.5.1"
-tauri-plugin-single-instance = "2.4.1"
+tauri-plugin-single-instance = "2.4.2"
 tauri-plugin-updater = "2"
 tauri-plugin-process = "2"
 tauri-plugin-notification = "2"
